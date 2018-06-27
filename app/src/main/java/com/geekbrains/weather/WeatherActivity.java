@@ -19,6 +19,8 @@ public class WeatherActivity extends AppCompatActivity {
     private static final String TAG = "WeatherActivity";
     private static final String TEXT = "TEXT";
     private static final String TEXTCITY = "TEXTCITY";
+    private static  String savedCity;
+    private String textcity;
 
     private TextView textView;
     private TextView textViewCity;
@@ -53,10 +55,10 @@ public class WeatherActivity extends AppCompatActivity {
         } else textView.setText("Добрый день");
 
 
-        if(getIntent().getExtras().getString(TEXTCITY) != null && !getIntent().getExtras().getString(TEXTCITY).isEmpty()){
-            String textcity = getIntent().getExtras().getString(TEXTCITY);
+        if(getIntent().getExtras().getString(TEXTCITY) != null && !getIntent().getExtras().getString(TEXTCITY).isEmpty()) {
+             textcity = getIntent().getExtras().getString(TEXTCITY);
             textViewCity.setText(textcity);
-        } else
+        } else textViewCity.setText(savedCity);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +88,7 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        savedCity = textViewCity.getText().toString();
         Log.d(TAG, "onPause");
     }
 
@@ -120,18 +123,5 @@ public class WeatherActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
     }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putCharSequence("savedCity",textViewCity.getText());
-        Log.d(TAG, "onSaveInstanceState");
-    }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        textViewCity.setText(savedInstanceState.getCharSequence("savedCity"));
-        Log.d(TAG, "onRestoreInstanceState");
-
-    }
 }
